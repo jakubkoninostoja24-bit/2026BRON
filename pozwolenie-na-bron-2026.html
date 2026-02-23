@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pozwolenie na Broń 2026 — Przewodnik</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,700;1,300&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<style>
+  :root {
+    --bg: #0f0f0d;
+    --bg2: #1a1a16;
+    --bg3: #242420;
+    --line: #2e2e28;
+    --text: #e8e4d8;
+    --muted: #7a7668;
+    --accent: #c8a94a;
+    --accent2: #4a9c6e;
+    --danger: #c8503a;
+    --glow: rgba(200,169,74,0.15);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* Grain texture overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9999;
+    opacity: 0.5;
+  }
+
+  /* TYPOGRAPHY */
+  h1, h2, h3 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 0.04em; line-height: 1.05; }
+  h1 { font-size: clamp(3rem, 10vw, 7rem); }
+  h2 { font-size: clamp(2rem, 5vw, 3.5rem); }
+  h3 { font-size: clamp(1.4rem, 3vw, 2rem); }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    background: rgba(15,15,13,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--line);
+    padding: 0 2rem;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+
+  .nav-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.12em;
+    color: var(--accent);
+  }
+
+  .nav-links { display: flex; gap: 2rem; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  .nav-cta {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 0.45rem 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+  }
+  .nav-cta:hover { background: #e0c060; transform: translateY(-1px); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 8rem 6% 4rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::after {
+    content: '2026';
+    position: absolute;
+    right: -2%;
+    top: 50%;
+    transform: translateY(-60%);
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(10rem, 22vw, 20rem);
+    color: rgba(200,169,74,0.05);
+    pointer-events: none;
+    letter-spacing: -0.02em;
+    white-space: nowrap;
+  }
+
+  .hero-left { position: relative; z-index: 1; }
+
+  .hero-tag {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.3rem 0.8rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .hero h1 {
+    color: var(--text);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero h1 span { color: var(--accent); }
+
+  .hero-desc {
+    font-size: 1.05rem;
+    color: var(--muted);
+    max-width: 440px;
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+  }
+
+  .hero-btns { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+  .btn-main {
+    background: var(--accent);
+    color: var(--bg);
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+    clip-path: polygon(0 0, calc(100% - 14px) 0, 100% 14px, 100% 100%, 14px 100%, 0 calc(100% - 14px));
+  }
+  .btn-main:hover { background: #e0c060; transform: translateY(-2px); }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--line);
+    padding: 1rem 2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.1em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-right {
+    display: flex; justify-content: flex-end; align-items: center;
+    position: relative; z-index: 1;
+  }
+
+  .hero-stats {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+    background: var(--line);
+    border: 1px solid var(--line);
+    max-width: 400px; width: 100%;
+  }
+
+  .stat-box {
+    background: var(--bg2);
+    padding: 2rem 1.5rem;
+    transition: background 0.2s;
+  }
+  .stat-box:hover { background: var(--bg3); }
+
+  .stat-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* SECTION WRAPPER */
+  section { padding: 6rem 6%; }
+
+  .section-header {
+    display: flex; align-items: baseline; gap: 1.5rem;
+    margin-bottom: 3rem;
+  }
+
+  .section-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 5rem;
+    color: var(--line);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+
+  .section-title-group {}
+  .section-tag {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+
+  /* PATH SELECTION */
+  #sciezki { background: var(--bg); }
+
+  .path-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+
+  .path-card {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 2.5rem;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .path-card::before {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0;
+    height: 3px;
+    width: 0;
+    background: var(--accent);
+    transition: width 0.3s;
+  }
+
+  .path-card:hover::before,
+  .path-card.selected::before { width: 100%; }
+
+  .path-card:hover { background: var(--bg3); }
+  .path-card.selected { border-color: var(--accent); background: rgba(200,169,74,0.05); }
+
+  .path-icon { font-size: 2.5rem; margin-bottom: 1rem; }
+  .path-card h3 { color: var(--accent); margin-bottom: 1rem; }
+
+  .path-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .path-list li { display: flex; align-items: flex-start; gap: 0.6rem; font-size: 0.9rem; color: var(--muted); }
+  .path-list li span:first-child { flex-shrink: 0; }
+  .path-list li .ok { color: var(--accent2); }
+  .path-list li .warn { color: var(--accent); }
+  .path-list li .no { color: var(--danger); }
+
+  .path-tip {
+    grid-column: 1/-1;
+    background: rgba(74, 156, 110, 0.1);
+    border: 1px solid var(--accent2);
+    padding: 1rem 1.5rem;
+    font-size: 0.88rem;
+    color: var(--accent2);
+    letter-spacing: 0.02em;
+  }
+
+  /* TIMELINE */
+  #procedura { background: var(--bg2); }
+
+  .timeline { position: relative; padding-left: 3rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0.5rem; bottom: 0.5rem;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--line) 70%);
+  }
+
+  .tl-item {
+    position: relative;
+    margin-bottom: 3rem;
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: opacity 0.5s, transform 0.5s;
+  }
+  .tl-item.visible { opacity: 1; transform: translateX(0); }
+
+  .tl-dot {
+    position: absolute;
+    left: -3rem;
+    top: 0.35rem;
+    width: 14px; height: 14px;
+    background: var(--bg);
+    border: 2px solid var(--muted);
+    border-radius: 50%;
+    transform: translateX(-6px);
+    transition: border-color 0.3s, background 0.3s;
+  }
+  .tl-item:hover .tl-dot,
+  .tl-item:first-child .tl-dot,
+  .tl-item:last-child .tl-dot {
+    border-color: var(--accent);
+    background: var(--accent);
+  }
+
+  .tl-meta {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.3rem;
+  }
+
+  .tl-title { color: var(--text); margin-bottom: 0.8rem; font-size: 1.5rem; }
+
+  .tl-card {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 1.5rem;
+    border-left: 3px solid var(--line);
+    transition: border-left-color 0.3s;
+    font-size: 0.92rem;
+    color: var(--muted);
+  }
+  .tl-item:hover .tl-card { border-left-color: var(--accent); }
+
+  .alert-box {
+    background: rgba(200,169,74,0.08);
+    border: 1px solid rgba(200,169,74,0.3);
+    padding: 0.8rem 1.2rem;
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: var(--accent);
+  }
+
+  .alert-danger {
+    background: rgba(200,80,58,0.08);
+    border-color: rgba(200,80,58,0.3);
+    color: var(--danger);
+  }
+
+  .badge-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-top: 0.8rem; }
+  .badge {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 0.5rem 0.8rem;
+    font-size: 0.82rem;
+    color: var(--text);
+  }
+
+  .tl-cta {
+    display: inline-block;
+    margin-top: 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent);
+    border: 1px solid var(--accent);
+    padding: 0.3rem 0.8rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    background: transparent;
+  }
+  .tl-cta:hover { background: rgba(200,169,74,0.1); }
+
+  /* EXAM SIMULATOR */
+  #egzamin { background: var(--bg); }
+
+  .exam-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: start; }
+
+  .mode-tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; }
+  .mode-tab {
+    flex: 1;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    color: var(--muted);
+    padding: 0.7rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    letter-spacing: 0.08em;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .mode-tab.active { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+  .mode-tab:hover:not(.active) { border-color: var(--muted); color: var(--text); }
+
+  .exam-desc-box {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    border-top: 3px solid var(--accent);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    min-height: 120px;
+  }
+  .exam-desc-box h4 { color: var(--accent); margin-bottom: 0.5rem; font-size: 1.3rem; }
+  .exam-desc-box p { font-size: 0.9rem; color: var(--muted); }
+
+  .fire-btn {
+    width: 100%;
+    background: var(--danger);
+    color: #fff;
+    border: none;
+    padding: 1.2rem;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.6rem;
+    letter-spacing: 0.15em;
+    cursor: pointer;
+    transition: all 0.15s;
+    clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+  }
+  .fire-btn:hover { background: #e0604a; transform: translateY(-2px); }
+  .fire-btn:active { transform: scale(0.98); }
+
+  .exam-result {
+    text-align: center;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.8rem;
+    letter-spacing: 0.1em;
+    min-height: 2.5rem;
+    margin-top: 1rem;
+  }
+  .result-pass { color: var(--accent2); }
+  .result-fail { color: var(--danger); }
+
+  .canvas-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  #targetCanvas {
+    background: #1e1e18;
+    border: 1px solid var(--line);
+    width: 100%;
+    max-width: 380px;
+    height: auto;
+    cursor: crosshair;
+    display: block;
+  }
+
+  .canvas-label { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; }
+
+  /* COSTS */
+  #koszty { background: var(--bg2); }
+
+  .cost-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+
+  .chart-wrap {
+    background: var(--bg);
+    border: 1px solid var(--line);
+    padding: 2rem;
+    position: relative;
+  }
+
+  .chart-container { height: 320px; }
+
+  .cost-total {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 3.5rem;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 0.2rem;
+  }
+  .cost-subtitle { font-size: 0.8rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 2rem; }
+
+  .cost-rows { display: flex; flex-direction: column; gap: 0; }
+  .cost-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--line);
+    transition: background 0.2s;
+  }
+  .cost-row:hover { background: var(--bg3); padding-left: 0.5rem; padding-right: 0.5rem; }
+  .cost-row:first-child { border-top: 1px solid var(--line); }
+  .cost-row-label { font-size: 0.88rem; color: var(--muted); }
+  .cost-row-amount { font-family: 'Bebas Neue', sans-serif; font-size: 1.3rem; color: var(--accent); letter-spacing: 0.05em; }
+
+  /* CHECKLIST */
+  #checklist { background: var(--bg); }
+
+  .checklist-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 2px; }
+
+  .check-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 1.2rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .check-item::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 0;
+    background: rgba(74,156,110,0.08);
+    transition: width 0.3s;
+  }
+
+  .check-item.done::before { width: 100%; }
+  .check-item.done { border-color: rgba(74,156,110,0.3); }
+
+  .check-box {
+    width: 22px; height: 22px;
+    border: 1.5px solid var(--muted);
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8rem;
+    color: transparent;
+    transition: all 0.2s;
+    position: relative; z-index: 1;
+  }
+  .check-item.done .check-box {
+    border-color: var(--accent2);
+    background: var(--accent2);
+    color: var(--bg);
+  }
+
+  .check-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1rem;
+    color: var(--line);
+    min-width: 1.5rem;
+    text-align: center;
+    position: relative; z-index: 1;
+    transition: color 0.2s;
+  }
+  .check-item.done .check-num { color: var(--accent2); }
+
+  .check-text {
+    font-size: 0.88rem;
+    color: var(--muted);
+    transition: color 0.2s;
+    position: relative; z-index: 1;
+  }
+  .check-item.done .check-text { color: var(--accent2); text-decoration: line-through; }
+
+  .progress-bar-wrap {
+    background: var(--bg2);
+    border: 1px solid var(--line);
+    padding: 1.5rem 2rem;
+    margin-top: 2px;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+  }
+  .progress-label {
+    font-size: 0.7rem;
+    font-weight: 500;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .progress-track {
+    flex: 1;
+    height: 4px;
+    background: var(--line);
+    position: relative;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--accent2);
+    width: 0%;
+    transition: width 0.4s;
+  }
+  .progress-pct {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.5rem;
+    color: var(--accent);
+    min-width: 3.5rem;
+    text-align: right;
+  }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2);
+    border-top: 1px solid var(--line);
+    padding: 2rem 6%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.78rem;
+    color: var(--muted);
+  }
+  footer strong { color: var(--accent); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.6s, transform 0.6s;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    .hero { grid-template-columns: 1fr; padding-top: 6rem; }
+    .hero-right { display: none; }
+    .path-grid { grid-template-columns: 1fr; }
+    .exam-grid { grid-template-columns: 1fr; }
+    .cost-grid { grid-template-columns: 1fr; }
+    .checklist-grid { grid-template-columns: 1fr; }
+    .nav-links { display: none; }
+    section { padding: 4rem 4%; }
+  }
+
+  /* Animated underline on active scroll section */
+  .section-divider {
+    width: 60px; height: 2px;
+    background: var(--accent);
+    margin-bottom: 2rem;
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">DROGA DO BRONI</div>
+  <div class="nav-links">
+    <a href="#sciezki">Ścieżka</a>
+    <a href="#procedura">Procedura</a>
+    <a href="#egzamin">Egzamin</a>
+    <a href="#koszty">Koszty</a>
+    <a href="#checklist">Checklista</a>
+  </div>
+  <button class="nav-cta" onclick="scrollTo('checklist')">Twoja Lista</button>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <div class="hero-tag">Przewodnik 2026 · Polska</div>
+    <h1>Pozwolenie<br>na <span>Broń</span><br>krok po kroku</h1>
+    <p class="hero-desc">
+      Własna jednostka w szafie S1? Labirynt przepisów staje się prostą ścieżką. 
+      Tu masz pełną mapę — od pierwszego treningu po rejestrację.
+    </p>
+    <div class="hero-btns">
+      <button class="btn-main" onclick="document.getElementById('sciezki').scrollIntoView({behavior:'smooth'})">Rozpocznij →</button>
+      <button class="btn-ghost" onclick="document.getElementById('procedura').scrollIntoView({behavior:'smooth'})">Procedura</button>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-stats">
+      <div class="stat-box">
+        <div class="stat-num">6</div>
+        <div class="stat-label">Głównych kroków</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">~3M</div>
+        <div class="stat-label">Czasu procesu</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">242</div>
+        <div class="stat-label">PLN za wniosek</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">5</div>
+        <div class="stat-label">Dni na rejestrację</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ŚCIEŻKI -->
+<section id="sciezki">
+  <div class="section-header reveal">
+    <div class="section-num">01</div>
+    <div class="section-title-group">
+      <div class="section-tag">Wybór celu</div>
+      <h2>Wybierz Ścieżkę</h2>
+    </div>
+  </div>
+
+  <div class="path-grid reveal">
+    <div class="path-card" id="card-sport" onclick="selectPath('sport')">
+      <div class="path-icon">🏃</div>
+      <h3>Sportowiec</h3>
+      <ul class="path-list">
+        <li><span class="ok">✓</span><span>Możesz nosić broń załadowaną</span></li>
+        <li><span class="ok">✓</span><span>Pełne uprawnienia w zawodach</span></li>
+        <li><span class="warn">!</span><span>Wymaga startów w zawodach</span></li>
+        <li><span class="warn">!</span><span>Licencja wymaga odnawiania</span></li>
+        <li><span class="warn">!</span><span>Obowiązek regularnych treningów</span></li>
+      </ul>
+    </div>
+
+    <div class="path-card" id="card-collector" onclick="selectPath('collector')">
+      <div class="path-icon">🏺</div>
+      <h3>Kolekcjoner</h3>
+      <ul class="path-list">
+        <li><span class="ok">✓</span><span>Brak obowiązku startów w zawodach</span></li>
+        <li><span class="ok">✓</span><span>Badania lekarskie tylko raz</span></li>
+        <li><span class="ok">✓</span><span>Mniej formalności w utrzymaniu</span></li>
+        <li><span class="no">✕</span><span>Broń nosisz tylko rozładowaną</span></li>
+        <li><span class="no">✕</span><span>Ograniczone uprawnienia</span></li>
+      </ul>
+    </div>
+
+    <div class="path-tip">
+      💡 <strong>Pro tip:</strong> Najlepszą strategią jest złożenie wniosków o oba pozwolenia jednocześnie — maksimum uprawnień, minimalny duplikat formalności.
+    </div>
+  </div>
+</section>
+
+<!-- PROCEDURA -->
+<section id="procedura">
+  <div class="section-header reveal">
+    <div class="section-num">02</div>
+    <div class="section-title-group">
+      <div class="section-tag">Mapa procesu</div>
+      <h2>Droga do Szafy S1</h2>
+    </div>
+  </div>
+
+  <div class="timeline">
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-meta">Krok 2 · Dzień 0</div>
+      <h3 class="tl-title">Klub i „Miesiąc Miodowy"</h3>
+      <div class="tl-card">
+        <p>Zapisujesz się do licencjonowanego klubu strzeleckiego. Obowiązkowy staż to <strong style="color:var(--text)">1 miesiąc</strong> przed przystąpieniem do egzaminu. Wykorzystaj ten czas — naucz się manuala, ćwicz obsługę broni pod okiem instruktora.</p>
+        <div class="alert-box" style="margin-top:1rem;">
+          <strong>Złota zasada bezpieczeństwa:</strong> Lufa zawsze w kierunku kulochwytu. Palec na języku spustu WYŁĄCZNIE w momencie oddawania strzału.
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-meta">Krok 3 · Po 1 miesiącu stażu</div>
+      <h3 class="tl-title">Egzamin na Patent Strzelecki</h3>
+      <div class="tl-card">
+        <p>Dwuczęściowy egzamin: <strong style="color:var(--text)">teoria</strong> (10 pytań — musisz odpowiedzieć bezbłędnie na wszystkie!) i <strong style="color:var(--text)">praktyka</strong> z 3 rodzajów broni.</p>
+        <p style="margin-top:0.6rem;">Praktyka: Pistolet (25m), Karabin (50m), Strzelba (popery). W każdej konkurencji musisz trafić min. 4 z 5 strzałów w wyznaczoną strefę.</p>
+        <button class="tl-cta" onclick="document.getElementById('egzamin').scrollIntoView({behavior:'smooth'})">Ćwicz w symulatorze ↓</button>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-meta">Krok 4 · Ważność zaświadczeń: 3 miesiące</div>
+      <h3 class="tl-title">Maraton Medyczny</h3>
+      <div class="tl-card">
+        <p>Cztery obowiązkowe wizyty — zaplanuj je w jeden dzień, wiele klinik oferuje pakiety.</p>
+        <div class="badge-grid">
+          <div class="badge">👁️ Okulista</div>
+          <div class="badge">🧠 Psycholog</div>
+          <div class="badge">🩺 Psychiatra</div>
+          <div class="badge">👨‍⚕️ Orzecznik</div>
+        </div>
+        <p style="margin-top:0.8rem; font-size:0.82rem;">Koszt pakietu: ok. <strong style="color:var(--text)">800 zł</strong>. Zaświadczenia tracą ważność po 3 miesiącach — synchronizuj z terminem składania wniosku.</p>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-meta">Krok 5 · Po uzyskaniu patentu i licencji</div>
+      <h3 class="tl-title">Wniosek do WPA i Szafa S1</h3>
+      <div class="tl-card">
+        <p>Masz patent, licencję zawodniczą PZSS i aktualne badania? Komplet dokumentów trafia do Wydziału Postępowań Administracyjnych Komendy Stołecznej / Miejskiej Policji.</p>
+        <p style="margin-top:0.6rem;">Równolegle: kupujesz <strong style="color:var(--text)">Szafę klasy S1</strong> — to wymóg prawny przechowywania broni. Dostępne są modele modułowe i szufladkowe, które mieszczą się w standardowych wnętrzach.</p>
+        <div class="alert-box">
+          Opłata za wniosek: <strong>242 zł</strong> za każde pozwolenie.
+        </div>
+      </div>
+    </div>
+
+    <div class="tl-item">
+      <div class="tl-dot"></div>
+      <div class="tl-meta">Krok 6 · Finał — dzień zakupu</div>
+      <h3 class="tl-title">Zakup i Rejestracja — Uważaj!</h3>
+      <div class="tl-card">
+        <p>Pozwolenie w ręku, wymarzona broń kupiona w sklepie? Masz teraz bardzo mało czasu.</p>
+        <div class="alert-box alert-danger">
+          ⚠️ <strong>UWAGA:</strong> Masz dokładnie <strong>5 dni kalendarzowych</strong> od dnia zakupu na rejestrację broni na policji. Przeoczenie tego terminu to wykroczenie!
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SYMULATOR EGZAMINU -->
+<section id="egzamin">
+  <div class="section-header reveal">
+    <div class="section-num">03</div>
+    <div class="section-title-group">
+      <div class="section-tag">Przygotowanie</div>
+      <h2>Symulator Egzaminu</h2>
+    </div>
+  </div>
+
+  <div class="exam-grid reveal">
+    <div>
+      <div class="mode-tabs">
+        <button class="mode-tab active" id="btn-pistol" onclick="setMode('pistol')">Pistolet</button>
+        <button class="mode-tab" id="btn-rifle" onclick="setMode('rifle')">Karabin</button>
+        <button class="mode-tab" id="btn-shotgun" onclick="setMode('shotgun')">Strzelba</button>
+      </div>
+
+      <div class="exam-desc-box" id="exam-desc">
+        <h4>Pistolet · 25 metrów</h4>
+        <p>Musisz umieścić <strong>4 z 5 strzałów</strong> w okręgu o średnicy <strong>15 cm</strong>. Strzelanie w postawie stojącej.</p>
+      </div>
+
+      <button class="fire-btn" onclick="fireShots()">
+        🎯 ODDAJ STRZAŁY
+      </button>
+      <div class="exam-result" id="exam-result"></div>
+    </div>
+
+    <div class="canvas-wrap">
+      <canvas id="targetCanvas" width="380" height="380"></canvas>
+      <div class="canvas-label">Wizualizacja uproszczona · Wymiary nieskalowane</div>
+    </div>
+  </div>
+</section>
+
+<!-- KOSZTY -->
+<section id="koszty">
+  <div class="section-header reveal">
+    <div class="section-num">04</div>
+    <div class="section-title-group">
+      <div class="section-tag">Planowanie budżetu</div>
+      <h2>Analiza Finansowa</h2>
+    </div>
+  </div>
+
+  <div class="cost-grid reveal">
+    <div class="chart-wrap">
+      <div class="chart-container">
+        <canvas id="costChart"></canvas>
+      </div>
+    </div>
+    <div>
+      <div class="cost-total">2 800 <span style="font-size:1.5rem;color:var(--muted)">PLN</span></div>
+      <div class="cost-subtitle">Szacowany całkowity koszt procedury (bez broni i szafy)</div>
+
+      <div class="cost-rows">
+        <div class="cost-row">
+          <span class="cost-row-label">Badania lekarskie — pakiet</span>
+          <span class="cost-row-amount">800 PLN</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-row-label">Szkolenia, egzamin, licencja</span>
+          <span class="cost-row-amount">~1 116 PLN</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-row-label">Opłaty urzędowe WPA (2 wnioski)</span>
+          <span class="cost-row-amount">484 PLN</span>
+        </div>
+        <div class="cost-row">
+          <span class="cost-row-label">Wpisowe do klubu strzeleckiego</span>
+          <span class="cost-row-amount">~400 PLN</span>
+        </div>
+        <div class="cost-row" style="border-bottom:none;">
+          <span class="cost-row-label" style="color:var(--text); font-weight:500;">Szafa S1 (osobno)</span>
+          <span class="cost-row-amount" style="color:var(--muted);">500–1500 PLN</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CHECKLISTA -->
+<section id="checklist">
+  <div class="section-header reveal">
+    <div class="section-num">05</div>
+    <div class="section-title-group">
+      <div class="section-tag">Twój postęp</div>
+      <h2>Checklista 2026</h2>
+    </div>
+  </div>
+
+  <div class="checklist-grid reveal" id="checklist-items"></div>
+
+  <div class="progress-bar-wrap">
+    <div class="progress-label">Postęp</div>
+    <div class="progress-track">
+      <div class="progress-fill" id="progress-fill"></div>
+    </div>
+    <div class="progress-pct" id="progress-pct">0%</div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div>Dane aktualne dla procedury w <strong>2026 roku</strong> · Polska</div>
+  <div>Na podstawie artykułu blogowego Ostoja24</div>
+</footer>
+
+<script>
+// ---- SMOOTH SCROLL ----
+function scrollTo(id) {
+  document.getElementById(id).scrollIntoView({behavior:'smooth'});
+}
+
+// ---- PATH SELECTION ----
+function selectPath(path) {
+  ['sport','collector'].forEach(p => {
+    document.getElementById('card-' + p).classList.remove('selected');
+  });
+  document.getElementById('card-' + path).classList.add('selected');
+}
+
+// ---- CHECKLIST ----
+const items = [
+  {num:'1', text:'Zapis do klubu strzeleckiego (300–500 zł)'},
+  {num:'2', text:'Staż 1 miesiąc + treningi pod okiem instruktora'},
+  {num:'3', text:'Zdanie egzaminu na Patent Strzelecki'},
+  {num:'4', text:'Uzyskanie licencji zawodniczej PZSS'},
+  {num:'5', text:'Badania lekarskie — pełen pakiet (~800 zł)'},
+  {num:'6', text:'Złożenie wniosków do WPA (242 zł/szt)'},
+  {num:'7', text:'Zakup i montaż szafy klasy S1'},
+  {num:'8', text:'Zakup broni + rejestracja w ciągu 5 dni!'},
+];
+
+const container = document.getElementById('checklist-items');
+
+items.forEach((item, i) => {
+  const div = document.createElement('div');
+  div.className = 'check-item';
+  div.id = 'ci-' + i;
+  div.innerHTML = `
+    <div class="check-box" id="cbox-${i}">✓</div>
+    <div class="check-num">${item.num}.</div>
+    <div class="check-text">${item.text}</div>
+  `;
+  div.onclick = () => toggleItem(i);
+  container.appendChild(div);
+});
+
+function toggleItem(i) {
+  const el = document.getElementById('ci-' + i);
+  el.classList.toggle('done');
+  updateProgress();
+}
+
+function updateProgress() {
+  const done = document.querySelectorAll('.check-item.done').length;
+  const pct = Math.round((done / items.length) * 100);
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-pct').textContent = pct + '%';
+}
+
+// ---- EXAM SIMULATOR ----
+const modes = {
+  pistol: {
+    title: 'Pistolet · 25 metrów',
+    desc: 'Musisz umieścić <strong>4 z 5 strzałów</strong> w okręgu o średnicy <strong>15 cm</strong>. Strzelanie w postawie stojącej.',
+    type: 'circle',
+    zoneR: 60,
+    shots: 5,
+    required: 4,
+    spread: 90,
+  },
+  rifle: {
+    title: 'Karabin · 50 metrów',
+    desc: 'Strzelanie leżąc. Wymóg: <strong>4 z 5 strzałów</strong> w bardzo małą strefę — rozmiar monety. Precyzja kluczowa!',
+    type: 'circle',
+    zoneR: 22,
+    shots: 5,
+    required: 4,
+    spread: 45,
+  },
+  shotgun: {
+    title: 'Strzelba · Popery',
+    desc: 'Strzelanie do 5 metalowych celów (popers). Wymóg: <strong>3 z 5</strong> muszą być trafione i przewrócone.',
+    type: 'poppers',
+    shots: 5,
+    required: 3,
+    spread: 0,
+  }
+};
+
+let currentMode = 'pistol';
+
+function setMode(m) {
+  currentMode = m;
+  ['pistol','rifle','shotgun'].forEach(x => {
+    document.getElementById('btn-'+x).classList.toggle('active', x === m);
+  });
+  const d = modes[m];
+  document.getElementById('exam-desc').innerHTML = `<h4>${d.title}</h4><p>${d.desc}</p>`;
+  document.getElementById('exam-result').textContent = '';
+  drawTarget([]);
+}
+
+function drawTarget(hits) {
+  const canvas = document.getElementById('targetCanvas');
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height, cx = W/2, cy = H/2;
+  ctx.clearRect(0,0,W,H);
+
+  const m = modes[currentMode];
+
+  if (m.type === 'poppers') {
+    // Draw 5 poppers
+    const spacing = W / 6;
+    for (let i = 0; i < 5; i++) {
+      const px = (i+1) * spacing;
+      const py = H/2;
+      // Body
+      ctx.fillStyle = '#3a3a30';
+      ctx.fillRect(px - 6, py - 10, 12, 50);
+      // Head
+      ctx.beginPath();
+      ctx.arc(px, py - 22, 18, 0, Math.PI*2);
+      ctx.fillStyle = '#3a3a30';
+      ctx.fill();
+    }
+
+    // Draw hit results
+    hits.forEach((hit, i) => {
+      const px = (i+1) * spacing;
+      const py = H/2;
+      const isHit = hit.hit;
+      if (isHit) {
+        ctx.beginPath();
+        ctx.arc(px, py - 22, 18, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(74,156,110,0.7)';
+        ctx.fill();
+        ctx.font = 'bold 16px DM Sans';
+        ctx.fillStyle = '#fff';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('✓', px, py - 22);
+      } else {
+        ctx.beginPath();
+        ctx.arc(px, py - 22, 18, 0, Math.PI*2);
+        ctx.fillStyle = 'rgba(200,80,58,0.4)';
+        ctx.fill();
+      }
+    });
+
+  } else {
+    // Bullseye rings
+    const rings = [
+      { r: 160, color: '#d4d0c0' },
+      { r: 130, color: '#e8e4d8' },
+      { r: 100, color: '#d4d0c0' },
+      { r: 72, color: '#111' },
+      { r: 46, color: '#111' },
+      { r: 24, color: '#c8503a' },
+    ];
+    rings.forEach(ring => {
+      ctx.beginPath();
+      ctx.arc(cx, cy, ring.r, 0, Math.PI*2);
+      ctx.fillStyle = ring.color;
+      ctx.fill();
+    });
+
+    // Zone indicator
+    ctx.beginPath();
+    ctx.arc(cx, cy, m.zoneR, 0, Math.PI*2);
+    ctx.strokeStyle = 'rgba(200,169,74,0.8)';
+    ctx.lineWidth = 2;
+    ctx.setLineDash([6,4]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.lineWidth = 1;
+
+    // Draw hits
+    hits.forEach(hit => {
+      const dist = Math.sqrt((hit.x-cx)**2 + (hit.y-cy)**2);
+      const inZone = dist <= m.zoneR;
+      ctx.beginPath();
+      ctx.arc(hit.x, hit.y, 6, 0, Math.PI*2);
+      ctx.fillStyle = inZone ? 'rgba(74,156,110,0.9)' : 'rgba(200,80,58,0.9)';
+      ctx.fill();
+      ctx.strokeStyle = '#fff';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+    });
+  }
+}
+
+function fireShots() {
+  const canvas = document.getElementById('targetCanvas');
+  const W = canvas.width, cx = W/2, cy = W/2;
+  const m = modes[currentMode];
+  const hits = [];
+  let successCount = 0;
+
+  for (let i = 0; i < 5; i++) {
+    if (m.type === 'poppers') {
+      const isHit = Math.random() > 0.32;
+      hits.push({hit: isHit});
+      if (isHit) successCount++;
+    } else {
+      const angle = Math.random() * Math.PI * 2;
+      // Gaussian-like: sum of randoms
+      const r1 = Math.random(), r2 = Math.random(), r3 = Math.random();
+      const rawR = ((r1 + r2 + r3) / 3) * m.spread;
+      const x = cx + Math.cos(angle) * rawR;
+      const y = cy + Math.sin(angle) * rawR;
+      hits.push({x, y});
+      const dist = Math.sqrt((x-cx)**2 + (y-cy)**2);
+      if (dist <= m.zoneR) successCount++;
+    }
+  }
+
+  drawTarget(hits);
+
+  const resultEl = document.getElementById('exam-result');
+  if (successCount >= m.required) {
+    resultEl.innerHTML = `<span class="result-pass">ZDANE — ${successCount}/5 celnych 🎯</span>`;
+  } else {
+    resultEl.innerHTML = `<span class="result-fail">OBLANE — ${successCount}/5 · Próbuj dalej</span>`;
+  }
+}
+
+// ---- CHART.JS ----
+function initChart() {
+  const ctx = document.getElementById('costChart').getContext('2d');
+  new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: ['Badania lekarskie', 'Szkolenia, egzamin, licencja', 'Opłaty WPA', 'Wpisowe do klubu'],
+      datasets: [{
+        data: [800, 1116, 484, 400],
+        backgroundColor: ['#c8503a','#c8a94a','#4a9c6e','#5a8ab8'],
+        borderWidth: 0,
+        hoverOffset: 8,
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      cutout: '65%',
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: {
+            color: '#7a7668',
+            font: { family: 'DM Sans', size: 11 },
+            boxWidth: 10,
+            padding: 14,
+          }
+        },
+        tooltip: {
+          backgroundColor: '#1a1a16',
+          borderColor: '#2e2e28',
+          borderWidth: 1,
+          titleColor: '#e8e4d8',
+          bodyColor: '#c8a94a',
+          callbacks: {
+            label: ctx => ` ${ctx.raw} zł`
+          }
+        }
+      }
+    }
+  });
+}
+
+// ---- SCROLL REVEAL ----
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.reveal, .tl-item').forEach(el => observer.observe(el));
+
+// ---- INIT ----
+document.addEventListener('DOMContentLoaded', () => {
+  initChart();
+  drawTarget([]);
+});
+</script>
+</body>
+</html>
